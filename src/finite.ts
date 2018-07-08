@@ -1,7 +1,6 @@
 // Import here Polyfills if needed. Recommended core-js (npm i -D core-js)
 // import "core-js/fn/array.find"
 // ...
-import any = jasmine.any
 
 export default class DummyClass {
   private constructor() {}
@@ -29,9 +28,20 @@ export default class DummyClass {
   }
 
   public static add = DummyClass.curry((a: number, b: number) => a + b)
-
   public static inc(x: number) {
     var x = x + 1
     return { result: x }
+  }
+  public static compose = (f1: Function, f2: Function) => (a: any) => {
+    return { result: f1(f2(a)) }
+  }
+  public static head = <t>([head, ..._]) => {
+    return { result: head }
+  }
+  public static tail = <t>([_, ...tail]) => {
+    return { result: tail }
+  }
+  public static empty = <T>(a: T[]) => {
+    return { result: a.length === 0 }
   }
 }
