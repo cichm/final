@@ -72,5 +72,17 @@ describe('Given an instance of my finite library', () => {
       const result = DummyClass.first(a, 3)
       expect(result.result[0]).to.be.equal(1)
     })
+
+    it('should get reverse array and equal first element', () => {
+      const a: number[] = [1, 2, 3, 4, 5]
+      const result = DummyClass.last(a)
+      expect(result.result[0]).to.be.equal(5)
+    })
+
+    it('should slice and return new array', () => {
+      const a: number[] = [1, 2, 4, 5]
+      const result = DummyClass.slice(a, 2, 3)
+      expect(result.result[2]).to.be.equal(3)
+    })
   })
 })

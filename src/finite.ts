@@ -81,4 +81,18 @@ export default class DummyClass {
   public static first = <t>(a: t[], n: number = 1) => {
     return { result: DummyClass.ffirst(a, n) }
   }
+  private static flast = <t>(a: t[], l: number): t[] =>
+    DummyClass.reverse(DummyClass.ffirst(DummyClass.reverse(a), l))
+  public static last = <t>(a: t[], l: number = 1) => {
+    return { result: DummyClass.flast(a, l) }
+  }
+  private static fslice = <t>([a, ...as]: t[], i: number, y: number, c: number): any =>
+    DummyClass.fdef(a)
+      ? c == i
+        ? [y, a, ...DummyClass.fslice(as, i, y, c + 1)]
+        : [a, ...DummyClass.fslice(as, i, y, c + 1)]
+      : []
+  public static slice = <t>(a: t[], i: number, y: number, c: number = 0): any => {
+    return { result: DummyClass.fslice(a, i, y, c) }
+  }
 }
