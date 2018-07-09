@@ -16,6 +16,16 @@ describe('Given an instance of my finite library', () => {
       expect(result).to.be.equal(4)
     })
 
+    it('should mul two number', () => {
+      const result = DummyClass.mul(2)(3)
+      expect(result).to.be.equal(6)
+    })
+
+    it('should div two number', () => {
+      const result = DummyClass.div(16, 4)
+      expect(result).to.be.equal(4)
+    })
+
     it('should compose two functions', () => {
       const add = (a: number) => a + 1
       const mul = (a: number) => a * 2
@@ -43,6 +53,24 @@ describe('Given an instance of my finite library', () => {
       const a: number[] = []
       const result = DummyClass.empty(a)
       expect(result.result).to.be.equal(true)
+    })
+
+    // it('should sum array elements', () => {
+    //   const a: number[] = [1, 2, 3, 4, 5];
+    //   const result = DummyClass.sum(a);
+    //   expect(result.result).to.be.equal(15)
+    // });
+
+    it('should return typeof', () => {
+      const defined = 'defined'
+      const result = DummyClass.def(defined)
+      expect(result.result).to.be.equal(true)
+    })
+
+    it('should return reverse typeof', () => {
+      const defined = 'defined'
+      const result = DummyClass.undef(defined)
+      expect(result.result).to.be.equal(false)
     })
   })
 })

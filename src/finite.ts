@@ -5,29 +5,30 @@
 export default class DummyClass {
   private constructor() {}
 
-  public static curry = (fn: Function, length: number = fn.length) => {
+  private static curry = (fn: Function, a: number, length: number = fn.length) => {
     if (length === 0) {
       length = fn.length
     }
     return function() {
-      var args: any[] = []
-      for (var _i = 0; _i < arguments.length; _i++) {
-        args[_i] = arguments[_i]
-      }
+      const args = Array.from(arguments)
       if (args.length >= length) {
-        return fn.apply(void 0, args)
+        return fn.apply(a, args)
       }
-      return DummyClass.curry(function() {
-        var nextArgs = []
-        for (var _i = 0; _i < arguments.length; _i++) {
-          nextArgs[_i] = arguments[_i]
-        }
-        return fn.apply(void 0, args.concat(nextArgs))
-      }, fn.length - args.length)
+      return DummyClass.curry(
+        function() {
+          const nextArgs = Array.from(arguments)
+
+          return fn.apply(a, args.concat(nextArgs))
+        },
+        a,
+        fn.length - args.length
+      )
     }
   }
 
-  public static add = DummyClass.curry((a: number, b: number) => a + b)
+  public static add = DummyClass.curry((a: number, b: number) => a + b, 0)
+  public static mul = DummyClass.curry((a: number, b: number) => a * b, 1)
+  public static div = DummyClass.curry((a: number, b: number) => a / b, 1)
   public static inc(x: number) {
     var x = x + 1
     return { result: x }
@@ -35,13 +36,31 @@ export default class DummyClass {
   public static compose = (f1: Function, f2: Function) => (a: any) => {
     return { result: f1(f2(a)) }
   }
-  public static head = <t>([head, ..._]) => {
-    return { result: head }
+  public static fhead = <t>([x]: t[]) => x
+  public static head = <t>(head: t[]) => {
+    return { result: DummyClass.fhead(head) }
   }
-  public static tail = <t>([_, ...tail]) => {
-    return { result: tail }
+  private static ftail = ([x, ...xs]) => xs
+  public static tail = <t>(tail: t[]) => {
+    return { result: DummyClass.ftail(tail) }
   }
-  public static empty = <T>(a: T[]) => {
-    return { result: a.length === 0 }
+  private static fempty = (x: any[]): boolean => {
+    return x.length === 0
+  }
+  public static empty = <t>(a: t[]) => {
+    return { result: DummyClass.fempty(a) }
+  }
+  private static fsum = (a: number[]): number =>
+    DummyClass.fhead(a) + DummyClass.fsum(DummyClass.ftail(a))
+  public static sum = (a: number[]): any => {
+    result: DummyClass.fsum(a)
+  }
+  private static fdef = <t>(a: t) => typeof a !== 'undefined'
+  public static def = <t>(a: t) => {
+    return { result: DummyClass.fdef(a) }
+  }
+  private static fundef = <t>(a: t) => DummyClass.fdef(a)
+  public static undef = <t>(a: t) => {
+    return { result: !DummyClass.fundef(a) }
   }
 }
