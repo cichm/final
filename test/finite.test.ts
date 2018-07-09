@@ -55,12 +55,6 @@ describe('Given an instance of my finite library', () => {
       expect(result.result).to.be.equal(true)
     })
 
-    // it('should sum array elements', () => {
-    //   const a: number[] = [1, 2, 3, 4, 5];
-    //   const result = DummyClass.sum(a);
-    //   expect(result.result).to.be.equal(15)
-    // });
-
     it('should return typeof', () => {
       const defined = 'defined'
       const result = DummyClass.def(defined)
@@ -71,6 +65,12 @@ describe('Given an instance of my finite library', () => {
       const defined = 'defined'
       const result = DummyClass.undef(defined)
       expect(result.result).to.be.equal(false)
+    })
+
+    it('should get first n elements', () => {
+      const a: number[] = [1, 2, 3, 4, 5]
+      const result = DummyClass.first(a, 3)
+      expect(result.result[0]).to.be.equal(1)
     })
   })
 })
