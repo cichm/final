@@ -2,6 +2,10 @@
 // import "core-js/fn/array.find"
 // ...
 
+import { Lazy } from './type';
+import { MatchOption, condition, evaluation } from './match';
+import { Chain } from './chain';
+
 export default class DummyClass {
   private constructor() {}
 
@@ -95,4 +99,23 @@ export default class DummyClass {
   public static slice = <t>(a: t[], i: number, y: number, c: number = 0): any => {
     return { result: DummyClass.fslice(a, i, y, c) }
   }
-}
+  public static ife = <T, F>(e: boolean, t: Lazy<T>, f: Lazy<F>) => e ? t() : f();
+  public static range = (x: number): number[] =>
+    DummyClass.ife(x <= 0,
+      () => [],
+      () => [...DummyClass.range(x - 1), x - 1]);
+  public static match = <T>(options: MatchOption<T>[]): T | undefined =>
+    DummyClass.ife(!options.length,
+      () => undefined,
+      () => DummyClass.ife(condition(options[0]),
+        () => evaluation(options[0]),
+        () => DummyClass.match(options.slice(1))));
+  public static chain = <T>(t: T): Chain<T> => ({
+    map: <U>(fn: (t: T) => U) => DummyClass.chain(fn(t)),
+    value: () => t
+  });
+  public static isArray = <T>(a: T[]): boolean => {return Array.isArray(a);}
+  public static flatten = <T>([x, ...xs]: T[]): T[]  => DummyClass.def(x)
+    ? Array.isArray(x) ? [...DummyClass.flatten(x), ...DummyClass.flatten(xs)] : [x, ...DummyClass.flatten(xs)]
+    : []
+

@@ -84,5 +84,54 @@ describe('Given an instance of my finite library', () => {
       const result = DummyClass.slice(a, 2, 3)
       expect(result.result[2]).to.be.equal(3)
     })
+
+    it('if else should return text if true', () => {
+      const v = (x: number) => DummyClass.ife(x % 2 === 0, () => 'true', () => 'false')
+      expect(v(2)).to.be.equal('true')
+    })
+
+    it('should return empty array if passed 0', () => {
+      const a = DummyClass.range(0)
+      expect(a).to.deep.equal([])
+    })
+
+    it('should return array with 0, 1, 2, 3, 4, 5 numbers if passed 6', () => {
+      const a = DummyClass.range(6)
+      expect(a).to.deep.equal([0, 1, 2, 3, 4, 5])
+    })
+
+    it('should match with all conditions', () => {
+      const x: number = 2
+      const c = DummyClass.match([
+        [x === 3, () => 'nope'],
+        [x === 2, () => 'nope'],
+        [x === 1, () => 'nope']
+      ])
+      expect(c).to.deep.equal('nope')
+    })
+
+    it('can map a bunch of stuff', () => {
+      const mapping = DummyClass.chain('14.4')
+        .map(str => parseInt(str, 10))
+        .map(Math.floor)
+        .map(x => x * 2)
+        .map(x => ({
+          number: x
+        }))
+        .value()
+      expect(mapping.number).to.be.equal(28)
+    })
+
+    it('should return true if is array', () => {
+      const a: number[] = [1, 2, 4, 5]
+      const result = DummyClass.isArray(a)
+      expect(result).to.be.equal(true)
+    })
+
+    it('should flatten multi array', () => {
+      const a = [1, 2, 4, [1, 2, 3, 4, [1, 2, 3, 4]], 5]
+      const result = DummyClass.flatten(a)
+      expect(result).to.be.equal(true)
+    })
   })
 })
